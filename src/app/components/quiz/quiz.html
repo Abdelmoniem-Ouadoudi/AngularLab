@@ -1,0 +1,10 @@
+<div *ngIf="currentQuestion">
+	<h3>{{ currentQuestion.name }}</h3>
+	<ul>
+		<li *ngFor="let option of currentQuestion.options">
+			<input type="radio" [name]="'option' + currentQuestion.id"> {{ option.name }}
+		</li>
+	</ul>
+	<button (click)="prevQuestion()" [disabled]="currentIndex === 0">Back</button>
+	<button (click)="nextQuestion()" [disabled]="currentIndex === questions.length - 1">Next</button>
+</div>
