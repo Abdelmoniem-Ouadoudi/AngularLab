@@ -1,10 +1,40 @@
-<div *ngIf="currentQuestion">
-	<h3>{{ currentQuestion.name }}</h3>
-	<ul>
-		<li *ngFor="let option of currentQuestion.options">
-			<input type="radio" [name]="'option' + currentQuestion.id"> {{ option.name }}
-		</li>
-	</ul>
-	<button (click)="prevQuestion()" [disabled]="currentIndex === 0">Back</button>
-	<button (click)="nextQuestion()" [disabled]="currentIndex === questions.length - 1">Next</button>
+<div class="quiz-header">
+	<button (click)="goToQuiz()" [class.active]="mode === 'quiz'">Quiz</button>
+	<button (click)="goToReview()" [class.active]="mode === 'review'">Review</button>
+	<button (click)="submit()" [class.active]="mode === 'submitted'">Submit</button>
 </div>
+
+@if (mode === 'submitted') {
+<div class="result">
+	<h2>Quiz Completed!</h2>
+	<p>Your score: {{ getScore() }} / {{ questions.length }}</p>
+	<button class="reset-btn" (click)="resetQuiz()">Restart Quiz</button>
+</div>
+}
+
+@if (currentQuestion && mode !== 'submitted') {
+<div>
+	<h3>Q{{ currentIndex + 1 }}: {{ currentQuestion.name }}</h3>
+	<ul>
+		@for (option of currentQuestion.options; track $index) {
+		<li 
+			[class.correct]="mode === 'review' && isCorrect(currentQuestion.id, option.id)"
+			[class.wrong]="mode === 'review' && isSelected(currentQuestion.id, option.id) && !isCorrect(currentQuestion.id, option.id)"
+			[class.selected]="isSelected(currentQuestion.id, option.id)">
+			<input 
+				type="radio" 
+				[name]="'option' + currentQuestion.id" 
+				[value]="option.id"
+				[checked]="isSelected(currentQuestion.id, option.id)"
+				(change)="selectAnswer(currentQuestion.id, option.id)"
+				[disabled]="mode === 'review'"> 
+			{{ option.name }}
+		</li>
+		}
+	</ul>
+	<div class="nav-buttons">
+		<button (click)="prevQuestion()" [disabled]="currentIndex === 0">Back</button>
+		<button (click)="nextQuestion()" [disabled]="currentIndex === questions.length - 1">Next</button>
+	</div>
+</div>
+}

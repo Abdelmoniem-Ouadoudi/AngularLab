@@ -1,59 +1,30 @@
-# MyApp
+# My Angular App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+This project is a simple Angular application.
 
-## Development server
+## Project Structure
 
-To start a local development server, run:
+Here is an overview of the most important files and directories:
 
-```bash
-ng serve
-```
+- **`angular.json`**: This is the main configuration file for the Angular CLI. It defines how the application is built, tested, and served.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **`package.json`**: This file lists all the third-party libraries (dependencies) your project needs to run. It also defines custom scripts for building, testing, etc.
 
-## Code scaffolding
+- **`src/`**: This is where all your application's source code lives.
+    - **`index.html`**: The main HTML file of the app. The Angular application is loaded into this page.
+    - **`main.ts`**: This is the starting point of the application. It bootstraps (starts) the main `AppComponent`.
+    - **`styles.css`**: Use this file for global CSS styles that apply to the entire application.
+    - **`app/`**: This folder contains the core of your application.
+        - **`app.routes.ts`**: This file defines the navigation paths (routes) for your application. For example, which component to show for `/home` or `/about`.
+        - **`app.ts`** (often `app.component.ts`): This is the main component of the application, also called the "root component". It acts as a container for all other components.
+        - **`app.html`**: The HTML structure for the `AppComponent`. It usually contains the main layout and a `<router-outlet>` tag where other components are displayed based on the current route.
+        - **`components/`**: This directory holds all the reusable UI building blocks of your application.
+            - **`quiz/`**: A sample component for a quiz. It has its own logic (`quiz.ts`), template (`quiz.html`), and styles (`quiz.css`).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## How it works
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1.  When you run the application, the `main.ts` file is executed first.
+2.  `main.ts` bootstraps the Angular application, loading the main component (`AppComponent` from `app.ts`).
+3.  `AppComponent`'s template (`app.html`) is rendered inside the `index.html` file.
+4.  The `app.routes.ts` file tells the `AppComponent` which component to display inside the `<router-outlet>` based on the URL you are visiting.
+5.  Each component, like the `QuizComponent`, manages its own little piece of the user interface.
