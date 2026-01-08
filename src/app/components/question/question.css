@@ -1,0 +1,8 @@
+.question h3 {
+  margin-bottom: 10px;
+}
+
+.options {
+  list-style: none;
+  padding: 0;
+}

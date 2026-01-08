@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ques } from '../../data';
 import { Quiz, Question } from '../../models';
+import { PLATFORM_ID } from '@angular/core';
+import { QuestionComponent } from '../question/question';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, QuestionComponent],
   templateUrl: './quiz.html',
   styleUrls: ['./quiz.css']
 })
@@ -21,7 +23,7 @@ export class QuizComponent implements OnInit {
   mode: 'quiz' | 'review' | 'submitted' = 'quiz';
   selectedAnswers: { [questionId: number]: number } = {};
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     // Initialize quiz from data using the Quiz model
     this.quiz = Quiz.fromJson(ques);
     this.questions = this.quiz.questions;
@@ -105,12 +107,17 @@ export class QuizComponent implements OnInit {
 
   // LocalStorage methods
   private saveToLocalStorage(): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.selectedAnswers));
-    localStorage.setItem(this.MODE_KEY, this.mode);
-    localStorage.setItem(this.INDEX_KEY, this.currentIndex.toString());
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.selectedAnswers));
+      localStorage.setItem(this.MODE_KEY, this.mode);
+      localStorage.setItem(this.INDEX_KEY, this.currentIndex.toString());
+    }
   }
 
   private loadFromLocalStorage(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const savedAnswers = localStorage.getItem(this.STORAGE_KEY);
     const savedMode = localStorage.getItem(this.MODE_KEY);
     const savedIndex = localStorage.getItem(this.INDEX_KEY);
@@ -127,8 +134,10 @@ export class QuizComponent implements OnInit {
   }
 
   private clearLocalStorage(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-    localStorage.removeItem(this.MODE_KEY);
-    localStorage.removeItem(this.INDEX_KEY);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.STORAGE_KEY);
+      localStorage.removeItem(this.MODE_KEY);
+      localStorage.removeItem(this.INDEX_KEY);
+    }
   }
 }

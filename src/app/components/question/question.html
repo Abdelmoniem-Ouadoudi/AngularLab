@@ -1,0 +1,16 @@
+<div class="question" *ngIf="question">
+  <h3>Q{{ question.id }}: {{ question.name }}</h3>
+
+  <div class="options">
+    @for (opt of question.options; track $index) {
+      <app-option 
+        [option]="opt"
+        [selected]="selectedOptionId === opt.id"
+        [correct]="mode === 'review' && opt.isAnswer"
+        [disabled]="mode === 'review'"
+        [nameGroup]="'option' + question.id"
+        (select)="onSelect(opt.id)">
+      </app-option>
+    }
+  </div>
+</div>

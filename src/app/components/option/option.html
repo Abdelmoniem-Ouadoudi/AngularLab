@@ -1,0 +1,14 @@
+<div 
+  class="option"
+  [class.correct]="correct"
+  [class.wrong]="!correct && selected"
+  [class.selected]="selected">
+  <input 
+    type="radio"
+    [name]="nameGroup"
+    [value]="option.id"
+    [checked]="selected"
+    (change)="onChange()"
+    [disabled]="disabled">
+  {{ option.name }}
+</div>
